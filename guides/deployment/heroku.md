@@ -35,18 +35,20 @@ $ g8 scalatra/scalatra-sbt -b develop
 
 ### Make Jetty embeddable
 
-Open `project/build.scala` in the root of your project. You will find two lines like these:
+Open `project/build.scala` in the root of your project. You will find three lines like these:
 
 ```scala
-"org.eclipse.jetty" % "jetty-webapp" % "{{ site.jetty_version }}" % "container",
-"org.eclipse.jetty.orbit" % "javax.servlet" % "{{ site.servlet_version }}" % "container;provided;test" artifacts (Artifact("javax.servlet", "jar", "jar"))
+"org.eclipse.jetty" % "jetty-webapp" % "9.1.5.v20140505" % "container",
+"org.eclipse.jetty" % "jetty-plus" % "9.1.5.v20140505" % "container",
+"javax.servlet" % "javax.servlet-api" % "3.1.0"
 ```
 
-Those are basically right, but we need to add `compile` scope because Heroku is not a servlet host. It can only run your app via an embedded Jetty server you provide. So replace the two lines above with these two:
+Those are almost right, but we need to add `runtime` scope for Heroku. So replace the three lines above with these three:
 
 ```scala
-"org.eclipse.jetty" % "jetty-webapp" % "{{ site.jetty_version }}" % "compile;container",
-"org.eclipse.jetty.orbit" % "javax.servlet" % "{{ site.servlet_version }}" % "compile;container;provided;test" artifacts (Artifact("javax.servlet", "jar", "jar"))
+"org.eclipse.jetty" % "jetty-webapp" % "9.1.5.v20140505" % "container;runtime;provided",
+"org.eclipse.jetty" % "jetty-plus" % "9.1.5.v20140505" % "container;runtime",
+"javax.servlet" % "javax.servlet-api" % "3.1.0" % "runtime;compile;provided;test" artifacts Artifact("javax.servlet-api", "jar", "jar")
 ```
 
 ### Escape sbt
