@@ -74,7 +74,7 @@ usually has something like this in it:
 lazy val project = Project (
     "heroku-example",
     file("."),
-    settings = ++ Defaults.defaultSettings ++ ScalatraPlugin.scalatraWithJRebel ++ scalateSettings ++ Seq(
+    settings = ScalatraPlugin.scalatraWithJRebel ++ scalateSettings ++ Seq(
       organization := Organization,
       name := Name,
       // more stuff here
@@ -88,17 +88,12 @@ Add it into the project settings:
   lazy val project = Project (
     "heroku-example",
     file("."),
-    settings = seq(com.typesafe.startscript.StartScriptPlugin.startScriptForClassesSettings: _*) ++ Defaults.defaultSettings ++ ScalatraPlugin.scalatraWithJRebel ++ scalateSettings ++ Seq(
+    settings = SbtStartScript.startScriptForClassesSettings ++ Defaults.defaultSettings ++ ScalatraPlugin.scalatraWithJRebel ++ scalateSettings ++ Seq(
       organization := Organization,
       name := Name,
       // more stuff here
 ```
 
-For sbt 0.13.0 this `Seq` is:
-
-```scala
-seq(com.typesafe.sbt.SbtStartScript.startScriptForClassesSettings: _*)
-```
 ### Tell Heroku to use the generated start script
 
 Create a file named `Procfile` in the root of your application.
